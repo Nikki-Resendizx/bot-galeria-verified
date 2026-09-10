@@ -26,10 +26,10 @@ async function mostrarModelo(ctx, modeloId) {
     let total = (m.votosMalo||0)+(m.votosBueno||0);
     let pBueno = total? Math.round((m.votosBueno||0)/total*100) : 0;
     let pMalo = 100 - pBueno;
-    let caption = `👑 *${m.perfil}* 👑\n🆔 @${m.username} • ${m.edad} años • ${m.nacionalidad}\n\n💼 *Servicios:* ${m.servicios?.join(' • ') || '-'}\n\n📝 ${m.descripcion}\n\n⭐ *Votos:* ${total} votos\n👍🏻 ${pBueno}% Bueno | 👎🏻 ${pMalo}% Malo\n\n💬 *Vota y comenta en la galería*`;
+    let caption = `👑 *${m.perfil}* 👑\n🆔 @${m.username} • ${m.edad} años • ${m.nacionalidad}\n\n💼 *Servicios:* ${m.servicios?.join(' • ') || '-'}\n\n📝 ${m.descripcion}\n\n⭐ *Votos:* ${total} votos\n👍🏻 ${pBueno}% Bueno | 👎🏻 ${pMalo}% Malo`;
     await ctx.replyWithPhoto({ url: m.foto }, {
       caption, parse_mode: 'Markdown',
-    ...Markup.inlineKeyboard([
+     ...Markup.inlineKeyboard([
         [Markup.button.webApp('💖 VER PERFIL COMPLETO 💖', WEBAPP_URL)],
         [Markup.button.url('💬 Canal Free', m.canal_free || 'https://t.me/')],
         [Markup.button.callback('📋 Galería completa', 'lista')]
@@ -43,9 +43,9 @@ bot.start(async (ctx) => {
   if (payload && payload.startsWith('m_')) {
     return mostrarModelo(ctx, payload.replace('m_', ''));
   }
-  await ctx.reply(`👑 *BIENVENIDA A GALERÍA VERIFIED MODELS* 👑\n\n💖 Las mejores modelos verificadas\n⭐ Votos y comentarios reales\n🔞 Contenido 100% verificado\n\n👇 Entra a la galería:`, {
+  await ctx.reply(`👑 *BIENVENIDA A GALERÍA VERIFIED MODELS* 👑\n\n💖 Las mejores modelos verificadas\n\n👇 Entra a la galería:`, {
     parse_mode: 'Markdown',
-  ...Markup.inlineKeyboard([
+   ...Markup.inlineKeyboard([
       [Markup.button.webApp('💖 ABRIR GALERÍA 💖', WEBAPP_URL)],
       [Markup.button.callback('📋 Ver lista aquí', 'lista')]
     ])
@@ -63,7 +63,7 @@ bot.action('lista', async (ctx) => {
     botones.push([Markup.button.callback(`👑 ${m.perfil} @${m.username}`, `ver_${d.id}`)]);
   });
   botones.push([Markup.button.webApp('💖 ABRIR GALERÍA WEB 💖', WEBAPP_URL)]);
-  await ctx.reply(`👑 *GALERÍA VERIFIED MODELS* 👑\n💖 ${snap.size} modelos verificadas\n👇 Toca para ver:`, {
+  await ctx.reply(`👑 *GALERÍA VERIFIED MODELS* 👑\n💖 ${snap.size} modelos\n👇 Toca para ver:`, {
     parse_mode: 'Markdown',...Markup.inlineKeyboard(botones)
   });
 });
@@ -79,11 +79,16 @@ bot.command('galeria', (ctx) => {
   ]));
 });
 
+// FIX PARA VERCEL - ESTO ERA EL ERROR
 export default async (req, res) => {
+  if (req.method === 'GET') {
+    return res.status(200).send('Bot Galeria Verified OK 👑');
+  }
   try {
-    await bot.handleUpdate(req.body, res);
+    await bot.handleUpdate(req.body);
+    return res.status(200).send('ok');
   } catch(e){
     console.error(e);
-    res.status(200).send('ok');
+    return res.status(200).send('ok');
   }
 };
