@@ -228,11 +228,12 @@ bot.action(/ver_(.*)/, async(ctx)=>{
     let caption=replaceVars(c.plantilla_texto||"👑 {perfil} 👑\nHola {mencion}\nVotos: {votos}", m, ctx);
     let canalFree = m.canalFree || m.canal_free || "https://t.me/";
     let contacto = m.contacto || (m.username? `https://t.me/${m.username}` : "https://t.me/");
+    let emojiBtn = c.galeria_emoji_premium || "";
     let kb=[
-      [{text:"💖 𝗩𝗘𝗥 𝗣𝗘𝗥𝗙𝗜𝗟 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗢 💖", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary"}],
-      [{text:`👍 𝐁𝐮𝐞𝐧𝐨 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"}, {text:`👎 𝐌𝐚𝐥𝐨 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
-      [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘", url:canalFree, style:"primary"}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary"}],
-      [{text:"👈🏻 🅥🅞🅛🅥🅔🅡", callback_data:"lista", style:"danger"}, {text:"👑 🅘🅝🅘🅒🅘🅞", callback_data:"inicio", style:"danger"}]
+  [{text:"💖 𝗩𝗘𝗥 𝗣𝗘𝗥𝗙𝗜𝗟 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗢 💖", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary", icon_custom_emoji_id: emojiBtn}],
+  [{text:`👍 𝐁𝐮𝐞𝐧𝐨 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success", icon_custom_emoji_id: emojiBtn}, {text:`👎 𝐌𝐚𝐥𝐨 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
+  [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘", url:canalFree, style:"primary", icon_custom_emoji_id: emojiBtn}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary", icon_custom_emoji_id: emojiBtn}],
+  [{text:"👈🏻 🅥🅞🅛🅥🅔🅡", callback_data:"lista", style:"danger"}, {text:"👑 🅘🅝🅘🅒🅘🅞", callback_data:"inicio", style:"danger"}]
     ];
     let media = getMediaModelo(m);
     console.log("VER media", id, media? media.substring(0,30):"NO MEDIA", "campos:", Object.keys(m));
@@ -273,11 +274,12 @@ bot.action(/voto_(bueno|malo)_(.*)/, async(ctx)=>{
     let caption=replaceVars(c.plantilla_texto||"👑 {perfil} 👑\nVotos: {votos}", m, ctx);
     let canalFree = m.canalFree || m.canal_free || "https://t.me/";
     let contacto = m.contacto || (m.username? `https://t.me/${m.username}` : "https://t.me/");
+    let emojiBtn = c.galeria_emoji_premium || "";
     let kb=[
-      [{text:"💖 𝗩𝗘𝗥 𝗣𝗘𝗥𝗙𝗜𝗟 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗢 💖", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary"}],
-      [{text:`👍 𝐁𝐮𝐞𝐧𝐨 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"}, {text:`👎 𝐌𝐚𝐥𝐨 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
-      [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘", url:canalFree, style:"primary"}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary"}],
-      [{text:"👈🏻 🅥🅞🅛🅥🅔🅡", callback_data:"lista", style:"danger"}, {text:"👑 🅘🅝🅘🅒🅘🅞", callback_data:"inicio", style:"danger"}]
+  [{text:"💖 𝗩𝗘𝗥 𝗣𝗘𝗥𝗙𝗜𝗟 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗢 💖", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary", icon_custom_emoji_id: emojiBtn}],
+  [{text:`👍 𝐁𝐮𝐞𝐧𝐨 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success", icon_custom_emoji_id: emojiBtn}, {text:`👎 𝐌𝐚𝐥𝐨 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
+  [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘", url:canalFree, style:"primary", icon_custom_emoji_id: emojiBtn}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary", icon_custom_emoji_id: emojiBtn}],
+  [{text:"👈🏻 🅥🅞🅛🅥🅔🅡", callback_data:"lista", style:"danger"}, {text:"👑 🅘🅝🅘🅒🅘🅞", callback_data:"inicio", style:"danger"}]
     ];
     let media = getMediaModelo(m);
     try{ await ctx.deleteMessage(); }catch(e){}
