@@ -95,6 +95,19 @@ bot.command('admins', async(ctx)=>{ if(!(await isAdmin(ctx))) return; let c=awai
 bot.command('ban', async(ctx)=>{ if(!(await isAdmin(ctx))) return; let id=ctx.message.text.split(' ')[1]; if(!id) return ctx.reply("Usa /ban ID"); await setDoc(doc(db,"usuarios", String(id)),{banned:true},{merge:true}); await ctx.reply(`🚫 Baneado ${id}`); });
 bot.command('unban', async(ctx)=>{ if(!(await isAdmin(ctx))) return; let id=ctx.message.text.split(' ')[1]; await setDoc(doc(db,"usuarios", String(id)),{banned:false},{merge:true}); await ctx.reply(`✅ Desbaneado ${id}`); });
 bot.command('banned', async(ctx)=>{ if(!(await isAdmin(ctx))) return; let snap=await getDocs(collection(db,"usuarios")); let list=[]; snap.forEach(d=>{ if(d.data().banned) list.push(d.id); }); await ctx.reply(`Baneados: ${list.join(', ')||'ninguno'}`); });
+
+bot.command('setfoto', async(ctx)=>{
+  if(!(await isAdmin(ctx))) return;
+  let args = ctx.message.text.split(' ');
+  let id = args[1];
+  if(!id) return ctx.reply("Usa:\n/setfoto ID_DE_MODELO\nY responde a una FOTO con ese comando\n\n1. Manda la foto de la modelo\n2. Responde a esa foto con /setfoto ID");
+  let reply = ctx.message.reply_to_message;
+  if(!reply ||!reply.photo) return ctx.reply(`Responde a la FOTO con:\n/setfoto ${id}`);
+  let fileId = reply.photo[reply.photo.length-1].file_id;
+  await setDoc(doc(db,"modelos",id),{foto_file_id:fileId, foto:fileId, foto_url:fileId},{merge:true});
+  await ctx.reply(`✅ Foto guardada para modelo ${id}\nYa aparece en lista`);
+});
+
 bot.command('admin', async(ctx)=>{
   if(!(await isAdmin(ctx))) return ctx.reply("❌ No eres admin");
   await ctx.reply(`👑 𝗣𝗔𝗡𝗘𝗟 𝗗𝗘 𝗔𝗗𝗠𝗜𝗡𝗦`,{reply_markup:{inline_keyboard:[
@@ -209,11 +222,10 @@ bot.action(/ver_(.*)/, async(ctx)=>{
       [{text:"👈🏻 VOLVER", callback_data:"lista"}, {text:"👑 INICIO", callback_data:"inicio"}]
     ];
     let media=getMediaModelo(m);
-    console.log("FOTO", id, media? media.slice(0,100):"NULL");
     try{ await ctx.deleteMessage(); }catch(e){}
     if(media){
-      try{ await ctx.replyWithPhoto(media,{caption, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){ console.log("fail file_id", e.message); }
-      try{ await ctx.replyWithPhoto({url: media},{caption, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){ console.log("fail url", e.message); }
+      try{ await ctx.replyWithPhoto(media,{caption, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){}
+      try{ await ctx.replyWithPhoto({url: media},{caption, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){}
     }
     await ctx.reply(caption,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
   }catch(e){ console.error("ver_", e); }
@@ -224,6 +236,6 @@ bot.action(/voto_(bueno|malo)_(.*)/, async(ctx)=>{ try{ await ctx.answerCbQuery(
 bot.action('preview_start', async(ctx)=>{ try{ await ctx.answerCbQuery(); }catch(e){} let c=await getConfig(); let texto=replaceVars(c.bienvenida_texto||"Hola {mencion}",{},ctx); let media=c.bienvenida_media||c.bienvenida_media_file_id; try{ await ctx.deleteMessage(); }catch(e){} if(media){ try{ await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML'}); return; }catch(e){} } await ctx.reply(texto,{parse_mode:'HTML'}); });
 
 module.exports = async(req,res)=>{
-  if(req.method==='GET') return res.status(200).send('Bot OK - FINAL FIX FOTOS + PANEL');
+  if(req.method==='GET') return res.status(200).send('Bot OK - FIX STORAGE LLENO + SETFOTO');
   try{ await bot.handleUpdate(req.body); return res.status(200).send('ok'); }catch(e){ console.error(e); return res.status(200).send('ok'); }
 };
