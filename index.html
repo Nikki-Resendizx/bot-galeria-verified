@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeria Verified</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig = { apiKey:"AIzaSyAIHevrpglvhHK3IsxpnkHlWpxnuf5o1So", authDomain:"galeria-verifiedmodels.firebaseapp.com", projectId:"galeria-verifiedmodels", storageBucket:"galeria-verifiedmodels.firebasestorage.app", messagingSenderId:"684551560793", appId:"1:684551560793:web:3730a07d8d6ec737e3db48" };
+const app=initializeApp(firebaseConfig); const db=getFirestore(app);
+function getMedia(m){
+  let c=[m.foto_file_id, m.foto, m.foto_url, m.fotoUrl, m.fotos?.[0]];
+  for(let x of c){ if(typeof x==='string' && x.length>10) return x; }
+  return null;
+}
+async function load(){
+  const params=new URLSearchParams(location.search);
+  const id=params.get('m');
+  if(id){
+    const snap=await getDoc(doc(db,"modelos",id));
+    if(!snap.exists()){ document.getElementById('app').innerHTML='<p class=text-center>❌ Modelo no existe</p>'; return; }
+    const m={id:snap.id,...snap.data()};
+    const media=getMedia(m);
+    document.getElementById('app').innerHTML=`
+    <div class="max-w-md mx-auto p-4">
+      <img src="${media||'https://via.placeholder.com/400x600?text=Sin+Foto'}" class="w-full rounded-2xl shadow-lg">
+      <h1 class="text-2xl font-bold mt-4">${m.perfil||'Modelo'}</h1>
+      <p class="text-sm text-gray-500">${m.edad||''} ${m.nacionalidad||''}</p>
+      <p class="mt-3 whitespace-pre-wrap">${m.descripcion||''}</p>
+      <div class="mt-3">${(m.servicios||[]).map(s=>`<span class="inline-block bg-pink-100 text-pink-700 px-2 py-1 rounded-full text-xs m-1">${s}</span>`).join('')}</div>
+      <a href="${m.canalFree||'#'}" class="block mt-4 bg-blue-500 text-white text-center py-3 rounded-xl font-bold">💎 CANAL FREE</a>
+      <a href="${m.contacto||'#'}" class="block mt-2 bg-green-500 text-white text-center py-3 rounded-xl font-bold">💬 CONTACTAR</a>
+      <a href="./" class="block mt-2 text-center py-2">⬅️ Volver</a>
+    </div>`;
+  } else {
+    const snap=await getDocs(collection(db,"modelos"));
+    let html='<h1 class="text-3xl font-bold text-center py-6">👑 GALERIA VERIFIED 👑</h1><div class="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 max-w-5xl mx-auto">';
+    snap.forEach(d=>{
+      const m=d.data(); const media=getMedia(m);
+      html+=`<a href="?m=${d.id}" class="bg-white rounded-2xl overflow-hidden shadow hover:scale-105 transition"><img src="${media||'https://via.placeholder.com/300x400?text=Sin+Foto'}" class="w-full h-64 object-cover"><div class="p-2 font-bold text-center">${m.perfil||d.id}</div></a>`;
+    });
+    html+='</div>';
+    document.getElementById('app').innerHTML=html;
+  }
+}
+load();
+</script>
+</head>
+<body class="bg-gray-50"><div id="app" class="min-h-screen flex items-center justify-center">Cargando...</div></body>
+</html>
