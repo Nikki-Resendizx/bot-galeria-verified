@@ -49,34 +49,34 @@ bot.start(async(ctx)=>{
 bot.command('admin', async(ctx)=>{
   if(!isAdmin(ctx)) return ctx.reply("❌ No eres admin");
   await ctx.reply(`👑 <b>PANEL DE ADMIN</b> 👑\n\n👋 BIENVENID@ AL PANEL DE CONTROL\nAQUI PODRAS MANEJAR EL DISEÑO Y FUNCIONES DEL BOT.\n\n⬇️ QUE DECEAS REALIAZAR ⬇️`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[
-    [{text:"👋🏻 𝗕𝗜𝗘𝗡𝗩𝗘𝗡𝗜𝗗𝗔", callback_data:"panel_bienvenida", style:"success"}, {text:"🖼️ 𝗚𝗔𝗟𝗘𝗥𝗜𝗔", callback_data:"panel_galeria", style:"primary"}],
-    [{text:"👤 𝗨𝗦𝗨𝗔𝗥𝗜𝗢𝗦", callback_data:"panel_usuarios", style:"primary"}, {text:"💾 𝗣𝗟𝗔𝗡𝗧𝗜𝗟𝗟𝗔𝗦", callback_data:"panel_plantillas", style:"danger"}],
-    [{text:"🌐 𝗔𝗗𝗠𝗜𝗡 𝗣𝗔𝗡𝗘𝗟 𝗪𝗘𝗗 🖥️", web_app:{url:"https://bot-galeria-verified.vercel.app/admin.html"}, style:"primary"}]
+    [{text:"👋🏻 𝗕𝗜𝗘𝗡𝗩𝗘𝗡𝗜𝗗𝗔", callback_data:"panel_bienvenida", style:"primary"}, {text:"🖼️ 𝙂𝘼𝙇𝙀𝙍𝙄𝘼", callback_data:"panel_galeria", style:"primary"}],
+    [{text:"👤 𝙐𝙎𝙐𝘼𝙍𝙄𝙊𝙎", callback_data:"panel_usuarios", style:"danger"}, {text:"📝 ", callback_data:"panel_plantillas", style:"danger"}],
+    [{text:"🌐 𝘼𝘿𝙈𝙄𝙉 𝙋𝘼𝙉𝙀𝙇 𝙒𝙀𝘿", web_app:{url:"https://bot-galeria-verified.vercel.app/admin.html"}, style:"success"}]
   ]}});
 });
 
 bot.action('panel_bienvenida', async(ctx)=>{ await ctx.answerCbQuery(); let c=await getConfig();
-  await ctx.reply(`🟢 <b>BOTON DE BIENVENIDA</b>\nFoto: ${c.bienvenida_media||c.bienvenida_media_file_id||c.bienvenida_media_url?'✅':'❌'}\nTexto: ${(c.bienvenida_texto||'').substring(0,500)}\n\nVariable: {mencion} OPCIONAL - ponla donde quieras`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[
-    [{text:"📸 Cambiar Foto", callback_data:"edit_bienvenida_foto", style:"primary"}, {text:"📝 Texto {mencion}", callback_data:"edit_bienvenida_texto", style:"success"}],
-    [{text:"👁️ Preview /start", callback_data:"preview_start", style:""}],[{text:"⬅️ Volver", callback_data:"back_panel", style:"danger"}]
+  await ctx.reply(`👋🏻 <b>𝘽𝙄𝙀𝙉𝙑𝙀𝙉𝙄𝘿𝘼</b>\nFoto: ${c.bienvenida_media||c.bienvenida_media_file_id||c.bienvenida_media_url?'✅':'❌'}\nTexto: ${(c.bienvenida_texto||'').substring(0,500)}\n\nVariable: {mencion} OPCIONAL - ponla donde quieras`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[
+    [{text:"📸 Cambiar Foto", callback_data:"edit_bienvenida_foto", style:"primary"}, {text:"📝 Texto {mencion}", callback_data:"edit_bienvenida_texto", style:"primary"}],
+    [{text:"👁️ Preview /start", callback_data:"preview_start", style:"success"}],[{text:"⬅️ Volver", callback_data:"back_panel", style:"danger"}]
   ]}});
 });
 bot.action('panel_galeria', async(ctx)=>{ await ctx.answerCbQuery(); let c=await getConfig();
-  await ctx.reply(`🔵 <b>GALERÍA</b>\nFoto: ${c.galeria_media||c.galeria_media_file_id||c.galeria_media_url?'✅':'❌'}\nEmoji premium: ${c.galeria_emoji_premium||'no'}`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[
+  await ctx.reply(`🖼️ <b>𝙂𝘼𝙇𝙀𝙍𝙄𝘼</b>\nFoto: ${c.galeria_media||c.galeria_media_file_id||c.galeria_media_url?'✅':'❌'}\nEmoji premium: ${c.galeria_emoji_premium||'no'}`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[
     [{text:"📸 Cambiar Foto", callback_data:"edit_galeria_foto", style:"primary"}, {text:"📝 Texto {mencion}", callback_data:"edit_galeria_texto", style:"success"}],
     [{text:"🧩 Emoji premium", callback_data:"edit_galeria_emoji", style:"primary"}],[{text:"⬅️ Volver", callback_data:"back_panel", style:"danger"}]
   ]}});
 });
-bot.action('panel_usuarios', async(ctx)=>{ await ctx.answerCbQuery(); let snap=await getDocs(collection(db,"usuarios")).catch(()=>({size:0})); await ctx.reply(`🔵 USUARIOS\nTotal: ${snap.size}`,{reply_markup:{inline_keyboard:[[{text:"⬅️ Volver", callback_data:"back_panel", style:"danger"}]]}}); });
-bot.action('panel_plantillas', async(ctx)=>{ await ctx.answerCbQuery(); let c=await getConfig(); await ctx.reply(`🔴 PLANTILLAS\n${(c.plantilla_texto||'').substring(0,500)}\n\nVars: {mencion} {perfil}`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:"📝 Editar {mencion}", callback_data:"edit_plantilla_texto", style:"danger"}],[{text:"⬅️ Volver", callback_data:"back_panel", style:"danger"}]]}}); });
+bot.action('panel_usuarios', async(ctx)=>{ await ctx.answerCbQuery(); let snap=await getDocs(collection(db,"usuarios")).catch(()=>({size:0})); await ctx.reply(`👤 𝙐𝙎𝙐𝘼𝙍𝙄𝙊𝙎\nTotal: ${snap.size}`,{reply_markup:{inline_keyboard:[[{text:"⬅️ Volver", callback_data:"back_panel", style:"danger"}]]}}); });
+bot.action('panel_plantillas', async(ctx)=>{ await ctx.answerCbQuery(); let c=await getConfig(); await ctx.reply(`📝 𝙋𝙇𝘼𝙉𝙏𝙄𝙇𝘼𝙎\n${(c.plantilla_texto||'').substring(0,500)}\n\nVars: {mencion} {perfil}`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:"📝 Editar {mencion}", callback_data:"edit_plantilla_texto", style:"danger"}],[{text:"⬅️ Volver", callback_data:"back_panel", style:"danger"}]]}}); });
 bot.action('back_panel', async(ctx)=>{ await ctx.answerCbQuery(); return bot.telegram.sendMessage(ctx.from.id, "/admin"); });
 
 bot.action('edit_bienvenida_foto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='foto_bienvenida'; await ctx.reply("📸 Manda la FOTO"); });
-bot.action('edit_bienvenida_texto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='texto_bienvenida'; await ctx.reply("📝 Manda texto con {mencion} si quieres mención. Ej: Hola {mencion} bienvenid@ 👑 - Si no pones {mencion}, no sale nada."); });
+bot.action('edit_bienvenida_texto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='texto_bienvenida'; await ctx.reply("📝 Manda texto con {mencion} + emoji premium si quieres"); });
 bot.action('edit_galeria_foto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='foto_galeria'; await ctx.reply("📸 Manda foto GALERÍA"); });
-bot.action('edit_galeria_texto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='texto_galeria'; await ctx.reply("📝 Manda texto galería con {mencion} opcional"); });
+bot.action('edit_galeria_texto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='texto_galeria'; await ctx.reply("📝 Manda texto galería con {mencion} + premium"); });
 bot.action('edit_galeria_emoji', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='emoji_galeria'; await ctx.reply("🧩 Manda UN SOLO emoji premium"); });
-bot.action('edit_plantilla_texto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='texto_plantilla'; await ctx.reply("📝 Manda plantilla con {mencion} {perfil} etc - {mencion} es OPCIONAL"); });
+bot.action('edit_plantilla_texto', async(ctx)=>{ await ctx.answerCbQuery(); esperando[ctx.from.id]='texto_plantilla'; await ctx.reply("📝 Manda plantilla con {mencion} {perfil} + premium"); });
 
 bot.on(['photo','document'], async(ctx, next)=>{
   if(!isAdmin(ctx)) return next? next() : null;
@@ -87,7 +87,7 @@ bot.on(['photo','document'], async(ctx, next)=>{
   if(next) return next();
 });
 
-// FIX PREMIUM AUTO-DETECT - SOLO CORREGIDO
+// === CORREGIDO 4: DETECTOR PREMIUM + VARIABLES JUNTAS ===
 bot.on('text', async(ctx, next)=>{
   let txt=ctx.message.text;
   if(txt.startsWith('/')) { if(next) return next(); else return; }
@@ -96,31 +96,29 @@ bot.on('text', async(ctx, next)=>{
   let ent=ctx.message.entities||[];
   let premiumIds = ent.filter(e=>e.type==='custom_emoji').map(e=>e.custom_emoji_id);
   let firstPremium = premiumIds[0] || "";
+
   if(st==='texto_bienvenida'){
-    let data={bienvenida_texto:txt};
-    if(premiumIds.length) data.bienvenida_premium_ids=premiumIds;
+    let data={bienvenida_texto:txt, bienvenida_premium_ids:premiumIds};
     if(firstPremium) data.bienvenida_emoji_premium=firstPremium;
     await setDoc(doc(db,"config","bot"),data,{merge:true});
     delete esperando[ctx.from.id];
-    return ctx.reply(`✅ Texto guardado${firstPremium?`\n✨ Premium auto-detectado: ${firstPremium}`:''}`);
+    return ctx.reply(`✅ Texto bienvenida guardado${premiumIds.length?`\n✨ ${premiumIds.length} premium detectado: ${firstPremium}`:''}\nVars {mencion} funcionan igual`);
   }
   if(st==='texto_galeria'){
-    let data={galeria_texto:txt};
-    if(premiumIds.length) data.galeria_texto_premium_ids=premiumIds;
+    let data={galeria_texto:txt, galeria_texto_premium_ids:premiumIds};
     if(firstPremium) data.galeria_emoji_premium=firstPremium;
     await setDoc(doc(db,"config","bot"),data,{merge:true});
     delete esperando[ctx.from.id];
-    return ctx.reply(`✅ Texto galería guardado${firstPremium?`\n✨ Premium auto-detectado`:''}`);
+    return ctx.reply(`✅ Texto galería guardado${premiumIds.length?`\n✨ Premium: ${firstPremium}`:''}`);
   }
   if(st==='emoji_galeria'){
     let id=firstPremium || txt;
-    await setDoc(doc(db,"config","bot"),{galeria_emoji_premium:id},{merge:true});
+    await setDoc(doc(db,"config","bot"),{galeria_emoji_premium:String(id)},{merge:true});
     delete esperando[ctx.from.id];
     return ctx.reply(`✅ Emoji premium guardado: ${id}`);
   }
   if(st==='texto_plantilla'){
-    let data={plantilla_texto:txt};
-    if(premiumIds.length) data.plantilla_premium_ids=premiumIds;
+    let data={plantilla_texto:txt, plantilla_premium_ids:premiumIds};
     if(firstPremium) data.plantilla_emoji_premium=firstPremium;
     await setDoc(doc(db,"config","bot"),data,{merge:true});
     delete esperando[ctx.from.id];
@@ -128,79 +126,82 @@ bot.on('text', async(ctx, next)=>{
   }
 });
 
-// FIX LISTA - COLORES Y BORRA ANTERIOR - SOLO CORREGIDO
+// === CORREGIDO 5 y 2: GALERIA SOLO NOMBRES, 2 POR FILA, COLORES 🔵🔴 y WEB 🟢 + BORRA ANTERIOR ===
 bot.action('lista', async(ctx)=>{
   try{
     await ctx.answerCbQuery();
     let c=await getConfig();
-    let texto=replaceVars(c.galeria_texto||"👑 GALERIA {mencion}\nElige una chica 👇", {}, ctx);
-    let snap=await getDocs(query(collection(db,"modelos"),orderBy("fecha","desc")));
-    let keyboard=[]; let row=[]; let totalFila=0;
-    let coloresFila = ["primary","danger","success"]; // 0=azul 1=rojo 2=verde
+    let texto=replaceVars(c.galeria_texto||"👑 GALERIA {mencion}", {}, ctx);
+    let snap;
+    try{ snap=await getDocs(query(collection(db,"modelos"),orderBy("fecha","desc"))); }
+    catch(e){ snap=await getDocs(collection(db,"modelos")); }
+    let keyboard=[]; let row=[]; let idx=0;
     snap.forEach(d=>{
       let m=d.data();
-      let colorFila = coloresFila[Math.floor(totalFila/2) % coloresFila.length];
-      let btn={text:`${m.perfil}`, callback_data:`ver_${d.id}`, style:colorFila};
-      if(c.galeria_emoji_premium) btn.icon_custom_emoji_id=c.galeria_emoji_premium;
+      let nombreSolo = (m.perfil || m.nombre || "Chica").split('@')[0].trim(); // SIN @
+      // Orden: 1 boton azul, 2 boton rojo, se repite por fila
+      let style = (idx % 2 === 0)? "primary" : "danger"; // 🔵 azul / 🔴 rojo
+      let btn={text:nombreSolo, callback_data:`ver_${d.id}`, style};
+      if(c.galeria_emoji_premium) btn.icon_custom_emoji_id=String(c.galeria_emoji_premium);
       row.push(btn);
-      if(row.length===2){ keyboard.push(row); row=[]; totalFila+=2; }
+      idx++;
+      if(row.length===2){ keyboard.push(row); row=[]; }
     });
     if(row.length>0) keyboard.push(row);
-    keyboard.push([{text:"💖 ABRIR GALERÍA WEB", web_app:{url:WEBAPP_URL}, style:"success"}]);
-    keyboard.push([{text:"🏠 Inicio", callback_data:"inicio", style:"primary"}]);
-    let media = c.galeria_media || c.galeria_media_file_id;
-    try{ await ctx.deleteMessage(); }catch(e){}
-    if(media){ await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML', reply_markup:{inline_keyboard:keyboard}}); }
-    else{ await ctx.reply(texto,{parse_mode:'HTML', reply_markup:{inline_keyboard:keyboard}}); }
+    keyboard.push([{text:"💖 ABRIR GALERÍA WEB", web_app:{url:WEBAPP_URL}, style:"success"}]); // 🟢 verde abajo
+    let media = c.galeria_media || c.galeria_media_file_id || c.galeria_media_url;
+    try{ await ctx.deleteMessage(); }catch(e){} // 2. Elimina último mensaje del bot
+    if(media){ try{ await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML', reply_markup:{inline_keyboard:keyboard}}); return; }catch(e){ console.log("Error foto galeria", e.message)} }
+    await ctx.reply(texto,{parse_mode:'HTML', reply_markup:{inline_keyboard:keyboard}});
   }catch(e){ console.error("lista error", e); }
+});
+
+// === CORREGIDO 1,2,3: FOTO + PLANTILLA JUNTOS + BORRA + VOTOS ===
+bot.action(/ver_(.*)/, async(ctx)=>{
+  try{
+    await ctx.answerCbQuery();
+    let id = ctx.match[1].split('_')[0].trim();
+    let snap=await getDoc(doc(db,"modelos",id)); if(!snap.exists()) return;
+    let m={id:snap.id,...snap.data()}; let c=await getConfig();
+    let caption=replaceVars(c.plantilla_texto||"👑 {perfil} 👑\nHola {mencion}\nVotos: {votos} 👍 {porcentajeBueno}%", m, ctx);
+    let kb=buildKeyboard(c.plantilla_botones||[{text:"💖 VER", type:"web_app", url:WEBAPP_URL+"?m={id}", style:"primary", row:0}], m, ctx);
+    kb.push([
+      {text:`👍 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"},
+      {text:`👎 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}
+    ]);
+    kb.push([{text:"⬅️ Volver", callback_data:"lista", style:"primary"}, {text:"🏠 Inicio", callback_data:"inicio", style:"primary"}]);
+    // 1. Imagen principal de la modelo + plantilla en un solo mensaje
+    let media = m.foto || m.foto_file_id || m.foto_url || (m.fotos && m.fotos[0]) || null;
+    try{ await ctx.deleteMessage(); }catch(e){} // 2. Elimina anterior
+    if(media){ try{ await ctx.replyWithPhoto(media,{caption, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){ console.log("Error foto modelo", e.message)} }
+    await ctx.reply(caption,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
+  }catch(e){ console.error("ver_ error", e); }
 });
 
 bot.action('inicio', async(ctx)=>{
   try{
     await ctx.answerCbQuery();
     let c=await getConfig();
-    let texto=replaceVars(c.bienvenida_texto||"Hola {mencion} 👑\nBienvenid@ a Galeria", {}, ctx);
-    let kb=buildKeyboard(c.bienvenida_botones||[{text:"💖 𝘼𝘽𝙍𝙄𝙍 𝙂𝘼𝙇𝙀𝙍𝙄𝘼 𝙑𝙄𝙍𝙏𝙐𝘼𝙇 💖", type:"web_app", url:WEBAPP_URL, row:0},{text:"📋 VER LISTA", type:"callback", data:"lista", row:1}], {}, ctx);
+    let texto=replaceVars(c.bienvenida_texto||"Hola {mencion} 👑", {}, ctx);
+    let kb=buildKeyboard(c.bienvenida_botones||[{text:"💖 ABRIR GALERÍA", type:"web_app", url:WEBAPP_URL, style:"success", row:0},{text:"📋 VER LISTA", type:"callback", data:"lista", style:"primary", row:1}], {}, ctx);
     let media = c.bienvenida_media || c.bienvenida_media_file_id;
     try{ await ctx.deleteMessage(); }catch(e){}
-    if(media) await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
-    else await ctx.reply(texto,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
+    if(media){ try{ await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){} }
+    await ctx.reply(texto,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
   }catch(e){ console.error("inicio error", e); }
 });
 
-// FIX VER_ - FOTO REAL DE CADA MODELO + BORRA ANTERIOR + VOTOS
-bot.action(/ver_(.*)/, async(ctx)=>{
-  try{
-    await ctx.answerCbQuery();
-    let id = ctx.match[1].split('_')[0];
-    let snap=await getDoc(doc(db,"modelos",id)); if(!snap.exists()) return;
-    let m={id:snap.id,...snap.data()};
-    let c=await getConfig();
-    let caption=replaceVars(c.plantilla_texto||"👑 {perfil} 👑\nHola {mencion}\nVotos: {votos} 👍 {porcentajeBueno}%", m, ctx);
-    let kb=buildKeyboard(c.plantilla_botones||[{text:"💖 VER PERFIL", type:"web_app", url:WEBAPP_URL+"?m={id}", style:"primary", row:0}], m, ctx);
-    kb.push([
-      {text:`👍 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"},
-      {text:`👎 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}
-    ]);
-    kb.push([{text:"⬅️ Volver", callback_data:"lista", style:"primary"}, {text:"🏠 Inicio", callback_data:"inicio", style:"primary"}]);
-    let media = m.foto || m.foto_file_id || m.foto_url || (m.fotos && m.fotos[0]) || null;
-    try{ await ctx.deleteMessage(); }catch(e){}
-    if(media){ await ctx.replyWithPhoto(media,{caption, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); }
-    else{ await ctx.reply(caption,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); }
-  }catch(e){ console.error("ver_ error", e); }
-});
-
-// VOTOS - NUEVO PARA QUE FUNCIONEN
+// === CORREGIDO 3: VOTOS FUNCIONANDO ===
 bot.action(/voto_(bueno|malo)_(.*)/, async(ctx)=>{
   try{
-    await ctx.answerCbQuery("Voto guardado ✅").catch(()=>{});
+    await ctx.answerCbQuery("Voto guardado ✅");
     let tipo=ctx.match[1]; let id=ctx.match[2];
     let ref=doc(db,"modelos",id);
     if(tipo==='bueno') await updateDoc(ref,{votosBueno:increment(1)}).catch(async()=>{ await setDoc(ref,{votosBueno:1},{merge:true}); });
     else await updateDoc(ref,{votosMalo:increment(1)}).catch(async()=>{ await setDoc(ref,{votosMalo:1},{merge:true}); });
     let snap=await getDoc(ref); let m={id:snap.id,...snap.data()}; let c=await getConfig();
-    let caption=replaceVars(c.plantilla_texto||"👑 {perfil} 👑\nHola {mencion}\nVotos: {votos}", m, ctx);
-    let kb=buildKeyboard(c.plantilla_botones||[{text:"💖 VER PERFIL", type:"web_app", url:WEBAPP_URL+"?m={id}", row:0}], m, ctx);
+    let caption=replaceVars(c.plantilla_texto||"👑 {perfil} 👑\nVotos: {votos} 👍 {porcentajeBueno}%", m, ctx);
+    let kb=buildKeyboard(c.plantilla_botones||[{text:"💖 VER", type:"web_app", url:WEBAPP_URL+"?m={id}", row:0}], m, ctx);
     kb.push([
       {text:`👍 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"},
       {text:`👎 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}
@@ -210,7 +211,7 @@ bot.action(/voto_(bueno|malo)_(.*)/, async(ctx)=>{
     try{ await ctx.deleteMessage(); }catch(e){}
     if(media) await ctx.replyWithPhoto(media,{caption, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
     else await ctx.reply(caption,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
-  }catch(e){ console.error("voto", e.message); }
+  }catch(e){ console.error("voto error", e.message); }
 });
 
 bot.action('preview_start', async(ctx)=>{
@@ -218,11 +219,12 @@ bot.action('preview_start', async(ctx)=>{
   let texto=replaceVars(c.bienvenida_texto||"Hola {mencion}", {}, ctx);
   let kb=buildKeyboard(c.bienvenida_botones||[], {}, ctx);
   let media = c.bienvenida_media || c.bienvenida_media_file_id || c.bienvenida_media_url;
+  try{ await ctx.deleteMessage(); }catch(e){}
   if(media){ try{ await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){} }
   await ctx.reply(texto,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
 });
 
 module.exports = async(req,res)=>{
-  if(req.method==='GET') return res.status(200).send('Bot OK - FIX premium colores votos borrar');
+  if(req.method==='GET') return res.status(200).send('Bot OK - FIX 5 puntos');
   try{ await bot.handleUpdate(req.body); return res.status(200).send('ok'); }catch(e){ console.error(e); return res.status(200).send('ok'); }
 };
