@@ -58,7 +58,7 @@ bot.start(async(ctx)=>{
     console.log("START RECIBIDO", ctx.from.id);
     let c=await getConfig();
     let texto=replaceVars(c.bienvenida_texto||"Hola {mencion} 👑\nBienvenid@ a Galeria", {}, ctx);
-    let kb=buildKeyboard(c.bienvenida_botones||[{text:"💖 ABRIR GALERÍA", type:"web_app", url:WEBAPP_URL, style:"success", row:0},{text:"📋 VER LISTA", type:"callback", data:"lista", style:"primary", row:1}], {}, ctx);
+    let kb=buildKeyboard(c.bienvenida_botones||[{text:"💖 𝗩𝗘𝗥 𝗚𝗔𝗟𝗘𝗥𝗜𝗔 𝗩𝗜𝗥𝗧𝗨𝗔𝗟 💖", type:"web_app", url:WEBAPP_URL, style:"success", row:0},{text:"👑 𝗩𝗘𝗥 𝗟𝗜𝗦𝗧𝗔 𝗗𝗘 𝗠𝗢𝗗𝗘𝗟𝗢𝗦 👑", type:"callback", data:"lista", style:"primary", row:1}], {}, ctx);
     let media = c.bienvenida_media || c.bienvenida_media_file_id || c.bienvenida_media_url;
     if(media){ try{ await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML', reply_markup:{inline_keyboard:kb}}); return; }catch(e){ console.log("Error foto bienvenida:", e.message)} }
     await ctx.reply(texto,{parse_mode:'HTML', reply_markup:{inline_keyboard:kb}});
@@ -67,9 +67,9 @@ bot.start(async(ctx)=>{
 
 bot.command('admin', async(ctx)=>{
   if(!isAdmin(ctx)) return ctx.reply("❌ No eres admin");
-  await ctx.reply(`👑 <b>PANEL DE ADMIN</b>`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[
+  await ctx.reply(`👑 <b>𝗣𝗔𝗡𝗘𝗟 𝗗𝗘 𝗔𝗗𝗠𝗜𝗡𝗦</b> 👑`,{parse_mode:'HTML',reply_markup:{inline_keyboard:[
     [{text:"👋🏻 𝗕𝗜𝗘𝗡𝗩𝗘𝗡𝗜𝗗𝗔", callback_data:"panel_bienvenida", style:"primary"}, {text:"🖼️ 𝙂𝘼𝙇𝙀𝙍𝙄𝘼", callback_data:"panel_galeria", style:"primary"}],
-    [{text:"👤 𝙐𝙎𝙐𝘼𝙍𝙄𝙊𝙎", callback_data:"panel_usuarios", style:"danger"}, {text:"📝 ", callback_data:"panel_plantillas", style:"danger"}],
+    [{text:"👤 𝙐𝙎𝙐𝘼𝙍𝙄𝙊𝙎", callback_data:"panel_usuarios", style:"danger"}, {text:"📝 𝙋𝙇𝘼𝙉𝙏𝙄𝙇𝙇𝘼𝙎", callback_data:"panel_plantillas", style:"danger"}],
     [{text:"🌐 𝘼𝘿𝙈𝙄𝙉 𝙋𝘼𝙉𝙀𝙇 𝙒𝙀𝘿", web_app:{url:"https://bot-galeria-verified.vercel.app/admin.html"}, style:"success"}]
   ]}});
 });
@@ -158,7 +158,7 @@ bot.action('lista', async(ctx)=>{
       if(row.length===2){ keyboard.push(row); row=[]; }
     });
     if(row.length>0) keyboard.push(row);
-    keyboard.push([{text:"💖 ABRIR GALERÍA WEB", web_app:{url:WEBAPP_URL}, style:"success"}]);
+    keyboard.push([{text:"𝗩𝗘𝗥 𝗚𝗔𝗟𝗘𝗥𝗜𝗔 𝗩𝗜𝗥𝗧𝗨𝗔𝗟 💖", web_app:{url:WEBAPP_URL}, style:"success"}]);
     let media=c.galeria_media||c.galeria_media_file_id||c.galeria_media_url;
     try{ await ctx.deleteMessage(); }catch(e){}
     if(media){ try{ await ctx.replyWithPhoto(media,{caption:texto, parse_mode:'HTML', reply_markup:{inline_keyboard:keyboard}}); return; }catch(e){ console.log("foto galeria error", e.message)} }
@@ -176,10 +176,10 @@ bot.action(/ver_(.*)/, async(ctx)=>{
     let canalFree = m.canalFree || m.canal_free || "https://t.me/";
     let contacto = m.contacto || (m.username? `https://t.me/${m.username}` : "https://t.me/");
     let kb=[
-      [{text:"🔵 VER PERFIL COMPLETO", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary"}],
-      [{text:`🟢 VOTO BUENO 👍 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"}, {text:`🔴 VOTO MALO 👎 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
-      [{text:"🔵 CANAL FREE", url:canalFree, style:"primary"}, {text:"🔵 CONTACTAR", url:contacto, style:"primary"}],
-      [{text:"🔴 VOLVER", callback_data:"lista", style:"danger"}, {text:"🔴 INICIO", callback_data:"inicio", style:"danger"}]
+      [{text:"💖 𝗩𝗘𝗥 𝗣𝗘𝗥𝗙𝗜𝗟 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗢 💖", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary"}],
+      [{text:`👍 𝐁𝐮𝐞𝐧𝐨 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"}, {text:`👎 𝐌𝐚𝐥𝐨 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
+      [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘 💎", url:canalFree, style:"primary"}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary"}],
+      [{text:"👈🏻 🅥🅞🅛🅥🅔🅡", callback_data:"lista", style:"danger"}, {text:"👑 🅘🅝🅘🅒🅘🅞", callback_data:"inicio", style:"danger"}]
     ];
     let media = m.foto || m.foto_file_id || m.foto_url || m.fotoUrl || m.image || m.imagen || m.url || (m.fotos && m.fotos[0]) || null;
     console.log("VER media", id, media? "SI":"NO");
