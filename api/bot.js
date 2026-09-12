@@ -178,7 +178,7 @@ bot.action(/ver_(.*)/, async(ctx)=>{
     let kb=[
       [{text:"💖 𝗩𝗘𝗥 𝗣𝗘𝗥𝗙𝗜𝗟 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗢 💖", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary"}],
       [{text:`👍 𝐁𝐮𝐞𝐧𝐨 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"}, {text:`👎 𝐌𝐚𝐥𝐨 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
-      [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘 💎", url:canalFree, style:"primary"}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary"}],
+      [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘", url:canalFree, style:"primary"}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary"}],
       [{text:"👈🏻 🅥🅞🅛🅥🅔🅡", callback_data:"lista", style:"danger"}, {text:"👑 🅘🅝🅘🅒🅘🅞", callback_data:"inicio", style:"danger"}]
     ];
     let media = m.foto || m.foto_file_id || m.foto_url || m.fotoUrl || m.image || m.imagen || m.url || (m.fotos && m.fotos[0]) || null;
@@ -217,10 +217,10 @@ bot.action(/voto_(bueno|malo)_(.*)/, async(ctx)=>{
     let canalFree = m.canalFree || m.canal_free || "https://t.me/";
     let contacto = m.contacto || (m.username? `https://t.me/${m.username}` : "https://t.me/");
     let kb=[
-      [{text:"🔵 VER PERFIL COMPLETO", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary"}],
-      [{text:`🟢 VOTO BUENO 👍 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"}, {text:`🔴 VOTO MALO 👎 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
-      [{text:"🔵 CANAL FREE", url:canalFree, style:"primary"}, {text:"🔵 CONTACTAR", url:contacto, style:"primary"}],
-      [{text:"🔴 VOLVER", callback_data:"lista", style:"danger"}, {text:"🔴 INICIO", callback_data:"inicio", style:"danger"}]
+      [{text:"💖 𝗩𝗘𝗥 𝗣𝗘𝗥𝗙𝗜𝗟 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗢 💖", web_app:{url:`${WEBAPP_URL}?m=${m.id}`}, style:"primary"}],
+      [{text:`👍 𝐁𝐮𝐞𝐧𝐨 ${m.votosBueno||0}`, callback_data:`voto_bueno_${m.id}`, style:"success"}, {text:`👎 𝐌𝐚𝐥𝐨 ${m.votosMalo||0}`, callback_data:`voto_malo_${m.id}`, style:"danger"}],
+      [{text:"💎 𝗖𝗔𝗡𝗔𝗟 𝗙𝗥𝗘𝗘", url:canalFree, style:"primary"}, {text:"💬 𝗖𝗢𝗡𝗧𝗔𝗖𝗧𝗔𝗥", url:contacto, style:"primary"}],
+      [{text:"👈🏻 🅥🅞🅛🅥🅔🅡", callback_data:"lista", style:"danger"}, {text:"👑 🅘🅝🅘🅒🅘🅞", callback_data:"inicio", style:"danger"}]
     ];
     let media = m.foto || m.foto_file_id || m.foto_url || (m.fotos && m.fotos[0]) || null;
     try{ await ctx.deleteMessage(); }catch(e){}
